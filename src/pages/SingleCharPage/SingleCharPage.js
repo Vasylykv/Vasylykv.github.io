@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { useQuery } from 'react-query';
 
-import RickAndMortyService from '../../services/RickAndMortyService';
+import { getData, transformCharacter } from '../../helpers';
 import CharDetails from '../../components/charDetails/CharDetails';
 
 import Spinner from '../../components/UI/Spinner';
@@ -13,32 +14,21 @@ import './SingleCharPage.scss';
 const SingleCharPage = (props) => {
   const { id } = useParams();
 
-  const [character, setCharacter] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
+  const {
+    data: character = {},
+    isError,
+    isLoading,
+  } = useQuery(
+    'character',
+    () => getData(`${process.env.REACT_APP_API_BASE}character/${id}`),
+    {
+      select: (res) => transformCharacter(res),
+      cacheTime: 0,
+    }
+  );
 
-  const rickandmortyapi = new RickAndMortyService();
-
-  useEffect(() => {
-    rickandmortyapi
-      .getCharacter(id)
-      .then((char) => {
-        setCharacter(char);
-      })
-      .catch((err) => {
-        setError(true);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  }, [id]);
-
-  useEffect(() => {
-    sessionStorage.setItem('currentCharacterId', id);
-  }, [id]);
-
-  if (error) return <ErrorMessage />;
-  if (loading) return <Spinner />;
+  if (isError) return <ErrorMessage />;
+  if (isLoading) return <Spinner />;
 
   return (
     <div className="character-page">

@@ -2,43 +2,49 @@ import React, { useEffect, useState } from 'react';
 
 import { Link } from 'react-router-dom';
 
-import RickAndMortyService from '../../services/RickAndMortyService';
+import { useQuery } from 'react-query';
+
 import Spinner from '../UI/Spinner';
 import ErrorMessage from '../UI/ErrorMessage';
 import CharCard from '../charCard/CharCard';
 
-import { sortCharactersByName, searchByFilter } from '../../helpers';
+import {
+  getData,
+  sortCharactersByName,
+  searchByFilter,
+  transformCharacter,
+} from '../../helpers';
 
 import './charList.scss';
 
 const CharList = ({ filterQuery }) => {
-  const [characters, setCharacters] = useState([]);
   const [filteredCharacters, setFilteredCharacters] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(false);
 
-  const rickandmortyservice = new RickAndMortyService();
+  const {
+    data: characters = [],
+    isError,
+    isLoading,
+  } = useQuery(
+    'characters',
+    () => getData(`${process.env.REACT_APP_API_BASE}character`),
+    {
+      select: (res) => res.results.map(transformCharacter),
+      onSuccess: (data) => FilterAndSort(data),
+    }
+  );
 
-  useEffect(() => {
-    rickandmortyservice
-      .getAllCharacters()
-      .then((res) => {
-        setCharacters(sortCharactersByName(res));
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-        setError(err);
-      });
-  }, []);
-
-  useEffect(() => {
-    const filteredChars = searchByFilter(characters, filterQuery);
+  function FilterAndSort(charsArr) {
+    const filteredChars = searchByFilter(charsArr, filterQuery);
     setFilteredCharacters(sortCharactersByName(filteredChars));
-  }, [characters, filterQuery]);
+  }
 
-  if (error) return <ErrorMessage />;
-  if (loading) return <Spinner />;
+  useEffect(() => {
+    FilterAndSort(characters);
+    // eslint-disable-next-line
+  }, [filterQuery]);
+
+  if (isError) return <ErrorMessage />;
+  if (isLoading) return <Spinner />;
 
   return (
     <ul className="characters__list">

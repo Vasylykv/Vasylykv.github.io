@@ -36,6 +36,16 @@
       row-gap: 32px;
     }
   }
+
+  .character {
+    &__img {
+      width: 250px;
+      height: 250px;
+    }
+  }
+  .information {
+    margin-top: 36px;
+  }
 }
 
 @media (max-width: 575px) {
@@ -56,5 +66,35 @@
     &__img {
       height: 232px;
     }
+  }
+
+  .character {
+    &-page {
+      margin: 0 auto;
+      padding: 23px 32px 85px 24px;
+    }
+    &__name {
+      margin-top: 36px;
+      font-size: 38px;
+      line-height: 38px;
+    }
+    &__info {
+      margin-top: 77px;
+    }
+    &__img {
+      width: 150px;
+      height: 150px;
+    }
+    &__list {
+      grid-template-columns: 312px;
+      margin-top: 16px;
+      margin-left: 15px;
+      padding: 0;
+      align-self: start;
+    }
+  }
+  .information {
+    align-self: start;
+    margin-top: 35px;
   }
 }

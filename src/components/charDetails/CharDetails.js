@@ -24,7 +24,7 @@ const CharDetails = ({ character }) => {
           <div>{status}</div>
         </li>
         <li className="character__details-item">
-          <label className="">Specie</label>
+          <label className="">Species</label>
           <div>{species}</div>
         </li>
         <li className="character__details-item">
