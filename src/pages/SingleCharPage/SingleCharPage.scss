@@ -1,0 +1,18 @@
+.character {
+  &-page {
+    padding: 21px 50px;
+  }
+}
+
+.go-back {
+  display: flex;
+  align-items: center;
+  color: #000000;
+  font-size: 18px;
+  line-height: 21px;
+  font-weight: 700;
+  cursor: pointer;
+  img {
+    margin-right: 8px;
+  }
+}

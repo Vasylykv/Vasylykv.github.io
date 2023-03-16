@@ -1,0 +1,9 @@
+.characters__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 240px);
+  grid-template-rows: repeat(auto-fill, minmax(244px, auto));
+  grid-auto-rows: minmax(244px, auto);
+  justify-content: center;
+  margin-top: 51px;
+  gap: 24px 20px;
+}
