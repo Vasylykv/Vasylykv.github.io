@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
 
@@ -6,7 +6,7 @@ import { getData, transformCharacter } from '../../helpers';
 import CharDetails from '../../components/charDetails/CharDetails';
 
 import Spinner from '../../components/UI/Spinner';
-import ErrorMessage from '../../components/UI/ErrorMessage';
+import ErrorMessage from '../../components/UI/ErrorMessage/ErrorMessage';
 import arrowBack from '../../resources/img/arrow-back.svg';
 
 import './SingleCharPage.scss';
@@ -22,12 +22,12 @@ const SingleCharPage = (props) => {
     'character',
     () => getData(`${process.env.REACT_APP_API_BASE}character/${id}`),
     {
+      retry: false,
       select: (res) => transformCharacter(res),
       cacheTime: 0,
     }
   );
 
-  if (isError) return <ErrorMessage />;
   if (isLoading) return <Spinner />;
 
   return (
@@ -36,7 +36,7 @@ const SingleCharPage = (props) => {
         <img src={arrowBack} alt="go back arrow"></img>
         <span>Go Back</span>
       </Link>
-      <CharDetails character={character} />
+      {isError ? <ErrorMessage /> : <CharDetails character={character} />}
     </div>
   );
 };

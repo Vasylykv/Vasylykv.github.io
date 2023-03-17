@@ -1,4 +1,6 @@
-import img from '../../resources/error.gif';
+import img from '../../../resources/error.gif';
+
+import './errorMessage.scss';
 
 const ErrorMessage = () => {
   return <img src={img} alt="error" className="error"></img>;
