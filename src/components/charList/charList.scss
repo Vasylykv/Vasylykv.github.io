@@ -6,4 +6,10 @@
   justify-content: center;
   margin-top: 51px;
   gap: 24px 20px;
+  a {
+    transition: all 0.3s;
+    &:hover {
+      transform: translateY(-7px);
+    }
+  }
 }
